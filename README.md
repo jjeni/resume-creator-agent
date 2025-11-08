@@ -137,10 +137,4 @@ AI Workflow Engineer | Web Developer | Automation Builder
 
 - 🌐 [GitHub](https://github.com/jenij)  
 - 💼 [LinkedIn](https://linkedin.com/in/jenij)  
-- ✉️ your.email@example.com  
 
----
-
-## 📜 License
-
-This project is licensed under the **MIT License** — free to use and modify with credit.
