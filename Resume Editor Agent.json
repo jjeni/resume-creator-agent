@@ -1,0 +1,1020 @@
+{
+  "name": "Resume Editor Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        528
+      ],
+      "id": "ef51c87a-7e62-43ec-bf52-ee43cbe3754d",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "17hx4ANSM_10JgXjF0lQl56UuZ9vUGFz0jD8sJSGt3pU",
+          "mode": "list",
+          "cachedResultName": "Resume - JOB TITLE & DESCRIPTION",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17hx4ANSM_10JgXjF0lQl56UuZ9vUGFz0jD8sJSGt3pU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17hx4ANSM_10JgXjF0lQl56UuZ9vUGFz0jD8sJSGt3pU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -208,
+        528
+      ],
+      "id": "0a62bbe3-8482-49f3-aa78-3a4a816139ca",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Ugp82EGXrFxA1GMb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1DaC_9rQbWkI9YZrwmbIHR1aIrERhwQfCHRfj-DiYu1E",
+          "mode": "list",
+          "cachedResultName": "MY_RESUME_TEMPLATE",
+          "cachedResultUrl": "https://docs.google.com/document/d/1DaC_9rQbWkI9YZrwmbIHR1aIrERhwQfCHRfj-DiYu1E/edit?usp=drivesdk"
+        },
+        "name": "={{ $json['JOB TITLE'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        32,
+        528
+      ],
+      "id": "61e349bc-f40a-47d3-abc3-303aa66cffe9",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "y8SDnqAqlOrYI3lh",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Summary Section\n",
+        "height": 360,
+        "width": 680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -608
+      ],
+      "id": "6e1c6df2-c3ca-4156-84a3-ac5e65b77c8e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hey, I am Jeni J, Write me a professional summary in 4–5 simple sentences based on the following job title and job description. Use a clear and easy-to-understand tone. The summary should highlight relevant skills, experience, and strengths that match the job.\n\nJob Title: {{ $('Google Sheets').item.json['JOB TITLE'] }}\nJob Description: {{ $('Google Sheets').item.json['JOB DESCRIPTION'] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        512,
+        -560
+      ],
+      "id": "bd33abea-5c7a-4e77-8f71-de3710e86eab",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -400
+      ],
+      "id": "bdd303e0-0a39-4d51-922f-38013b64cb0d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{summary_placeholder}}",
+              "replaceText": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        864,
+        -560
+      ],
+      "id": "b930b15f-f66d-459e-af19-640c3bf79711",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Skills Section\n",
+        "height": 360,
+        "width": 680,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -176
+      ],
+      "id": "0d8643ad-fe46-4461-9ead-89611b5a8e8a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on the following job title and job description, list 10–12 technical skills and 4–7 soft or other relevant skills that match the role.\nOnly output the skills in this format:\nSkill 1 | Skill 2 | Skill 3 | ...\nDo not include any additional text or explanations. and combine tech (8-10 skills) and soft & other skill(4-6 skills) continuosly dont need a line break\n\nJob Title: {{ $('Google Sheets').item.json['JOB TITLE'] }}\nJob Description: {{ $('Google Sheets').item.json['JOB DESCRIPTION'] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        528,
+        -144
+      ],
+      "id": "3b558ddf-3aa6-4199-a944-e3c0e02b01f7",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        608,
+        32
+      ],
+      "id": "e48a88a1-fb8e-47c8-b17f-32bfb0b01c6f",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{skills_placeholder}}",
+              "replaceText": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -144
+      ],
+      "id": "1fdc7e39-3b32-49a9-abc1-a0976b7329c2",
+      "name": "Google Docs1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Experience Section\n",
+        "height": 400,
+        "width": 1100,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        240
+      ],
+      "id": "f247b501-f031-4077-be10-d97d0b74eeb8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Choose one randomly from this list: [Enlor, Techigen]. Output only the selected item.\n\nDo not include any additional text or explanations.\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        544,
+        304
+      ],
+      "id": "797a74f3-f218-4c59-8696-ee3ac874b5ad",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        624,
+        480
+      ],
+      "id": "69ce8f7d-6387-4d44-b28e-34587f46b7b9",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a 3-line fake work experience based on the following job title and job description.\nEach line should be realistic, concise, and separated by line breaks.\n\nJob Title: {{ $('Google Sheets').item.json['JOB TITLE'] }}\nJob Description: {{ $('Google Sheets').item.json['JOB DESCRIPTION'] }}\n\nExample format:\nWorked as a Frontend Developer at a startup.\nBuilt and maintained responsive web interfaces.\nCollaborated with designers and backend developers.\n\nDo not include any additional text or explanations.\n\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        880,
+        304
+      ],
+      "id": "8b2ba509-2d84-40c5-8e9b-6d022a24500e",
+      "name": "Basic LLM Chain3"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        944,
+        480
+      ],
+      "id": "144d7fc2-ee25-4911-b261-59373ddf1584",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{company_placeholder}}",
+              "replaceText": "={{ $('Basic LLM Chain2').item.json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        304
+      ],
+      "id": "5c2dccd3-2e73-4c37-905b-afebe94fe88f",
+      "name": "Google Docs2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{experience_placeholder}}",
+              "replaceText": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        480
+      ],
+      "id": "59929e3d-01fa-413e-8603-de928873ae26",
+      "name": "Google Docs3",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Certificates Section\n",
+        "height": 400,
+        "width": 700,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        432,
+        720
+      ],
+      "id": "47290ffd-e1c9-4be4-86f5-ffe7a4806a9e",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a fake certificate course title related to the following job and job description. Keep the response format as: [Course Name], By [Famous Company or Platform]\n\nJob Title: {{ $('Google Sheets').item.json['JOB TITLE'] }}\nJob Description: {{ $('Google Sheets').item.json['JOB DESCRIPTION'] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        560,
+        800
+      ],
+      "id": "b8bce0df-6505-4b12-84af-7cc211deabcb",
+      "name": "Basic LLM Chain4"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        640,
+        960
+      ],
+      "id": "8b516e3c-b9ce-4ce7-9a03-3a78a5449278",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{certificate_placeholder}}",
+              "replaceText": "={{ $json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        928,
+        800
+      ],
+      "id": "beea9bc7-66fc-4022-a1d9-ea26b1ca6829",
+      "name": "Google Docs4",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate 4 project ideas related to the following job title and description. Each project should include a short, creative title and a concise 2–3 sentence description of what the project does or aims to solve. Return the result each project name and description must be unique in the following format (add only the name of the projet not anyother keywords like Project) :\n\nproject_name\nproject_placeholder\n\nproject_name\nproject_placeholder\n\nproject_name\nproject_placeholder\n\nproject_name\nproject_placeholder\n\nJob Title:{{ $('Google Sheets').item.json['JOB TITLE'] }}\nJob Description: {{ $('Google Sheets').item.json['JOB DESCRIPTION'] }}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        544,
+        1280
+      ],
+      "id": "8b2cd72c-2401-44fe-a988-2c734a1d0995",
+      "name": "Basic LLM Chain5"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        1440
+      ],
+      "id": "22eeed8c-af7c-4161-8485-84adede9ec3a",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lSuJHC3g0sXBLfXn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{PROJECT_TITLE1_PLACEHOLDER}}",
+              "replaceText": "={{ $json.PROJECT_TITLE1_PLACEHOLDER }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        1280
+      ],
+      "id": "79f0aa36-673c-4fa7-9e1e-bc4436445a89",
+      "name": "Google Docs5",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input text from previous node (multiline string)\nconst raw_input =$input.first().json.text\n\n// Split into blocks (each block is a project: title + description)\nconst blocks = raw_input.trim().split('\\n\\n');\n\n// Store result in a dictionary\nconst variables = {};\n\n// Assign each block to a variable\nblocks.forEach((block, index) => {\n    const lines = block.trim().split('\\n');\n    const title = lines[0]?.trim();\n    const description = lines.slice(1).join(' ').trim(); // handles multi-line descriptions\n\n    if (title && description) {\n        const i = index + 1;\n        variables[`PROJECT_TITLE${i}_PLACEHOLDER`] = title;\n        variables[`project${i}_placeholder`] = description;\n    }\n});\n\n// Return all variables as one object for n8n output\nreturn [\n  {\n    json: variables\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        1280
+      ],
+      "id": "87848978-5833-4aa6-9ea5-6f7b30bde58a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{project1_placeholder}}",
+              "replaceText": "={{ $json.project1_placeholder }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        1488
+      ],
+      "id": "7b9db390-2a04-434f-b8ef-340368084e66",
+      "name": "Google Docs6",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{PROJECT_TITLE2_PLACEHOLDER}}",
+              "replaceText": "={{ $json.PROJECT_TITLE2_PLACEHOLDER }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        1664
+      ],
+      "id": "83957153-5f8e-4ef1-8f1d-e07901530bd5",
+      "name": "Google Docs7",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{project2_placeholder}}",
+              "replaceText": "={{ $json.project2_placeholder }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        1840
+      ],
+      "id": "f1a73550-3371-47e0-8b7f-ccca3cd8774b",
+      "name": "Google Docs8",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{PROJECT_TITLE3_PLACEHOLDER}}",
+              "replaceText": "={{ $json.PROJECT_TITLE3_PLACEHOLDER }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        1280
+      ],
+      "id": "a334973b-80a1-4283-8acb-8c21dcc86e51",
+      "name": "Google Docs9",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{project3_placeholder}}",
+              "replaceText": "={{ $json.project3_placeholder }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        1488
+      ],
+      "id": "c00cefe8-b9df-4b65-a645-da8c18124912",
+      "name": "Google Docs10",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{PROJECT_TITLE4_PLACEHOLDER}}",
+              "replaceText": "={{ $json.PROJECT_TITLE4_PLACEHOLDER }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        1680
+      ],
+      "id": "6e03e42f-32db-45a7-a04e-a8dfef51417b",
+      "name": "Google Docs11",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $('Google Drive').item.json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{project4_placeholder}}",
+              "replaceText": "={{ $json.project4_placeholder }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        1888
+      ],
+      "id": "54854c96-b515-411e-8150-2e64e63b58ee",
+      "name": "Google Docs12",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "eNHzxKLz5un29ioo",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        1888
+      ],
+      "id": "5d85ec0a-f01a-48e4-b97c-68844330ccda",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "y8SDnqAqlOrYI3lh",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Google Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Google Docs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain3": {
+      "main": [
+        [
+          {
+            "node": "Google Docs2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain4": {
+      "main": [
+        [
+          {
+            "node": "Google Docs4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain5": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Docs5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs8",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs11",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Docs12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs12": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "99281ee3-8a67-47c1-991c-1acf8d7797ff",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "035df5bd470c643732ad08e8570c8b6ad6f3ba408a1cb5de38fa463b9f4e2af1"
+  },
+  "id": "8xxQBjKm5g3m5tsY",
+  "tags": []
+}
