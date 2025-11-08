@@ -1,9 +1,13 @@
+
 # 🧠 Resume Editor AI Agent
 
 **Resume Editor AI Agent** is an AI-powered automation workflow built using **n8n**, **Google Gemini (PaLM)**, and **Google Workspace APIs**.  
 It automatically edits a resume template based on a given **Job Title** and **Job Description**, generating customized summaries, skills, experience, certificates, and projects.
 
 ---
+
+<img width="884" height="741" alt="image" src="https://github.com/user-attachments/assets/906d3a91-6a66-496b-b3bc-7f1252c4d43a" />
+
 
 ## 🚀 Key Features
 
