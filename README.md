@@ -135,6 +135,6 @@ Create a **Google Docs** resume template with placeholders:
 **Jeni J.**  
 AI Workflow Engineer | Web Developer | Automation Builder  
 
-- 🌐 [GitHub](https://github.com/jenij)  
-- 💼 [LinkedIn](https://linkedin.com/in/jenij)  
+- 🌐 [GitHub](https://github.com/jjeni)  
+- 💼 [LinkedIn](https://linkedin.com/in/jeni-j)  
 
