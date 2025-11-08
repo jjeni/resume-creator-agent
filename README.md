@@ -1,99 +1,88 @@
-🧠 **Resume Editor AI Agent**
+🧠 Resume Editor AI Agent
 
-Resume Editor AI Agent is an automated AI workflow built using n8n, Google Gemini (PaLM), and Google Workspace APIs.
-It takes a Job Title and Job Description as input and generates a customized, professional resume updating the summary, skills, experience, certificates, and project sections automatically.
+Resume Editor AI Agent is an AI-powered automation workflow built using n8n, Google Gemini (PaLM), and Google Workspace APIs.
+It automatically edits a resume template based on a given Job Title and Job Description, generating customized summaries, skills, experience, certificates, and projects.
 
-🚀 **Key Features**
+🚀 Key Features
 
-✅ **AI-Generated Summary**
-Creates a professional 4-5 line summary aligned with the provided job title and job description.
+AI-Generated Summary – Creates a professional summary aligned with the target job.
 
-✅ **Smart Skill Extraction**
-Analyzes the job post and lists relevant technical and soft skills.
+Smart Skill Extraction – Lists both technical and soft skills relevant to the role.
 
-✅ **AI-Written Experience Section**
-Generates short, realistic work experiences to match the role.
+AI-Written Experience Section – Generates realistic work experience lines.
 
-✅ **Certificates & Projects Generator**
-Adds fake yet relevant certificate titles and project ideas for resume enhancement.
+Certificates & Projects Generator – Adds role-related certificates and creative projects.
 
-✅ **Automated Resume Editing**
-Updates placeholders (e.g., {{summary_placeholder}}, {{skills_placeholder}}, etc.) in your Google Docs resume template and saves it automatically to Google Drive.
+Automated Resume Editing – Replaces placeholders in Google Docs automatically.
 
-✅ **No Manual Editing Needed**
-The workflow handles everything — from reading job info to saving the final polished resume.
+End-to-End Automation – Reads job data, generates AI output, and exports the resume to Google Drive.
 
-🧩 **Workflow Overview**
+🧩 Workflow Overview
 
-1. Trigger Node – Starts the workflow manually in n8n.
+Trigger Node – Manually starts the workflow in n8n.
 
-2. Google Sheets Node – Reads Job Title & Job Description from a Google Sheet.
+Google Sheets – Reads Job Title & Job Description.
 
-3. Google Drive Node – Copies a base resume template into a new file.
+Google Drive – Copies the base resume template.
 
-4. LLM Chains (Gemini) –
+Gemini AI – Generates summary, skills, experience, certificates, and projects.
 
-5. Writes Summary
+Google Docs – Replaces placeholders in the document with AI-generated text.
 
-6. Suggests Skills
+Google Drive Download – Saves or exports the final resume as a .pdf.
 
-7. Generates Experience, Certificates, and Projects
-
-8. Google Docs Nodes – Replace placeholders in the copied template with AI-generated content.
-
-9. Google Drive Download Node – Saves or exports the updated resume as a .pdf.
-
-⚙️**Tech Stack**
+⚙️ Tech Stack
 Tool / API	Purpose
 🧩 n8n	Orchestrates workflow automation
-🤖 Google Gemini (PaLM API)	AI model for text generation
+🤖 Google Gemini (PaLM)	AI model for text generation
 📄 Google Docs API	Edits resume template
-🧾 Google Sheets API	Fetches job input
-☁️ Google Drive API	Stores final resume
-💡 JavaScript Node (Code)	Parses and maps multiple project placeholders
-
-🧱 **Folder Structure**
-resume-creator-agent/
+📊 Google Sheets API	Fetches job input
+☁️ Google Drive API	Stores the final resume
+💡 JavaScript Node (Code)	Parses and maps project placeholders
+📂 Folder Structure
+resume-editor-ai-agent/
 │
-├── Resume_Editor_Agent_Public.json   # Sanitized n8n workflow
-├── README.md                         # Project documentation
+├── Resume_Editor_Agent_Public.json    # Sanitized n8n workflow
+├── README.md                          # Project documentation
+│
 ├── assets/
 │   └── workflow-diagram.png           # Optional visual workflow
-|   └── resume_template.docs           # Resume Template
+│
+├── templates/
+│   └── resume_template.docx           # Resume template with placeholders
+│
 └── examples/
     └── sample-output.pdf              # Example generated resume
-    
 
-⚙️ **Setup Instructions**
+⚙️ Setup Instructions
 1️⃣ Requirements
 
-n8n (self-hosted or n8n.cloud)
+n8n (self-hosted or n8n.cloud
+)
 
-Google Cloud account (for Drive, Docs, and Sheets APIs)
+Google Cloud project (for Drive, Docs, and Sheets APIs)
 
 Gemini (PaLM) API key
 
 2️⃣ Environment Setup
 
-In n8n, create these environment variables (Settings → Variables):
+In n8n, create the following environment variables (Settings → Variables):
 
 GOOGLE_EMAIL=your_service_account_email
 GOOGLE_PRIVATE_KEY=your_private_key
-OPENAI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=your_gemini_api_key
 
-3️⃣ Import the Workflow
+3️⃣ Import Workflow
 
-Open n8n editor
+Open n8n → Click Import from File
 
-Click Import from File
+Upload Resume_Editor_Agent_Public.json
 
-Choose Resume_Editor_Agent_Public.json
+Connect your Google Sheets, Google Docs, Google Drive, and Gemini credentials.
 
-Configure credentials (Google Sheets, Docs, Drive, and Gemini)
+4️⃣ Resume Template Setup
 
-4️⃣ Prepare Google Docs Template
-
-Create a resume template with placeholders such as:
+Create a Google Docs resume template with placeholders:
 
 {{summary_placeholder}}
 {{skills_placeholder}}
@@ -104,33 +93,34 @@ Create a resume template with placeholders such as:
 
 5️⃣ Run the Workflow
 
-Enter Job Title & Job Description in your linked Google Sheet
+Enter Job Title & Description in the connected Google Sheet.
 
-Click Execute Workflow
+Execute the workflow in n8n.
 
-The AI agent generates a personalized resume and saves it to your Google Drive 🚀
+A new resume will be generated and saved to your Google Drive — ready to share! 🚀
 
-📸 **Example Flow**
-
-Section	Output Example
-Summary	“Creative Frontend Developer skilled in React.js and UI optimization…”
-Skills	React.js • TypeScript • Tailwind CSS • API Integration • Collaboration
-Experience	Worked as Frontend Engineer at Techigen…
+🧾 Example Output
+Section	Example Output
+Summary	“Creative Frontend Developer skilled in React.js and TypeScript…”
+Skills	React.js, Tailwind CSS, API Integration, Collaboration
+Experience	Worked as a Frontend Developer at Techigen…
 Certificates	“Advanced Frontend Development, by Coursera”
-Projects	“Smart Portfolio – A React-based personal portfolio generator.”
+Projects	“Smart Portfolio – A React-based portfolio builder.”
+🧠 Future Enhancements
 
-🧠 **Future Enhancements**
+ Add email automation to send resumes directly.
 
- Add email automation to send resumes directly to recruiters.
  Integrate LinkedIn job scraping for auto-fetching descriptions.
- Support multiple templates per role.
- Create web dashboard to upload resumes and track edits.
 
-👩‍💻 **Author**
+ Support multiple templates for different roles.
+
+ Create a web dashboard for easier control.
+
+👩‍💻 Author
 
 Jeni J.
 AI Workflow Engineer | Web Developer | Automation Builder
 
-🌐 GitHub - https://github.com/jjeni/
-💼 LinkedIn - https://www.linkedin.com/in/jeni-j/
+🌐 GitHub
 
+💼 LinkedIn
